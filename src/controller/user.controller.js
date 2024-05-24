@@ -1,7 +1,20 @@
+const { createUser } = require('../service/user.service')
+
 class UserController {
   async register(ctx, next) {
     console.log(ctx)
-    ctx.body = '用户注册成功'
+    console.log(ctx.request.body)
+
+    const { username, password } = ctx.request.body
+
+    //操作数据库
+    const res = await createUser(username, password)
+
+    ctx.body = {
+      code: '0000',
+      msg: 'success',
+      data: res
+    }
   }
 
   async login(ctx, next) {
