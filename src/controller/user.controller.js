@@ -1,0 +1,12 @@
+class UserController {
+  async register(ctx, next) {
+    console.log(ctx)
+    ctx.body = '用户注册成功'
+  }
+
+  async login(ctx, next) {
+    ctx.body = '用户登录成功'
+  }
+}
+
+module.exports = new UserController()
