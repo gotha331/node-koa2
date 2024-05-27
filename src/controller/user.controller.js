@@ -24,7 +24,8 @@ class UserController {
   }
 
   async login(ctx, next) {
-    ctx.body = '用户登录成功'
+    const { username } = ctx.request.body
+    ctx.body = `欢迎回来,${username}`
   }
 }
 

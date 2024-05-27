@@ -4,7 +4,10 @@ const { getUserInfo } = require('../service/user.service')
 const {
   userFormateError,
   userAlreadyExited,
-  userRegisterError
+  userRegisterError,
+  userDoseNotExist,
+  userLoginError,
+  invalidPassword
 } = require('../constant/err.type')
 
 // 校验输入的用户名或密码是否为空
@@ -53,8 +56,36 @@ const cryptPassword = async (ctx, next) => {
   await next()
 }
 
+// 登陆校验
+const verifyLogin = async (ctx, next) => {
+  const { username, password } = ctx.request.body
+
+  try {
+    const res = await getUserInfo({ username })
+
+    // 1.判断用户是否存在(不存在: 报错)
+    if (!res) {
+      console.error('用户不存在', { username })
+      ctx.app.emit('error', userDoseNotExist, ctx)
+      return
+    }
+
+    // 2.密码是否匹配(不匹配: 报错)
+    if (!bcrypt.compareSync(password, res.password)) {
+      console.error('密码不匹配', { username })
+      ctx.app.emit('error', invalidPassword, ctx)
+    }
+
+    await next()
+  } catch (error) {
+    console.error(error)
+    ctx.app.emit('error', userLoginError, ctx)
+  }
+}
+
 module.exports = {
   userValidator,
   verifyUser,
-  cryptPassword
+  cryptPassword,
+  verifyLogin
 }
