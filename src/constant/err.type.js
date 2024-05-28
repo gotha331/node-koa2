@@ -1,4 +1,4 @@
-const { InvalidConnectionError } = require("sequelize");
+const { InvalidConnectionError } = require('sequelize')
 
 module.exports = {
   userFormateError: {
@@ -29,6 +29,16 @@ module.exports = {
   invalidPassword: {
     code: '10006',
     message: '密码不匹配',
+    result: ''
+  },
+  tokenExpiredError: {
+    code: '10101',
+    message: 'token已过期',
+    result: ''
+  },
+  invalidToken: {
+    code: '10102',
+    message: '无效的token',
     result: ''
   }
 }
