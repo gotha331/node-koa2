@@ -47,6 +47,8 @@ class UserController {
     try {
       const { password, ...res } = await getUserInfo({ username })
 
+      console.log(res)
+
       ctx.body = {
         code: '0',
         message: '用户登录成功',
