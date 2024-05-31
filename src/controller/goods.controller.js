@@ -1,9 +1,10 @@
 const path = require('path')
-const { createGoods } = require('../service/goods.service')
+const { createGoods, updateGoods } = require('../service/goods.service')
 const {
   fileUploadError,
   unSupportedFileType,
-  publishGoodsError
+  publishGoodsError,
+  invalidGoodsId
 } = require('../constant/err.type')
 
 class GoodsController {
@@ -36,14 +37,16 @@ class GoodsController {
   }
 
   /**
-   *
+   * 发布商品
    * @param {*} ctx
    * @param {*} next
    */
   async create(ctx, next) {
     // 直接调用service的createGoods方法
     try {
-      const { createdAt, updatedAt, ...res } = await createGoods(ctx.request.body)
+      const { createdAt, updatedAt, ...res } = await createGoods(
+        ctx.request.body
+      )
 
       ctx.body = {
         code: 0,
@@ -53,6 +56,31 @@ class GoodsController {
     } catch (error) {
       console.error(error)
       return ctx.app.emit('error', publishGoodsError, ctx)
+    }
+  }
+
+  /**
+   * 更新/修改商品
+   * @param {*} ctx
+   * @param {*} next
+   */
+  async update(ctx, next) {
+    // 字节调用service的updateGoods方法
+
+    try {
+      const res = await updateGoods(ctx.params.id, ctx.request.body)
+
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '修改商品成功',
+          result: ''
+        }
+      } else {
+        return ctx.app.emit('error', invalidGoodsId, ctx)
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 }
