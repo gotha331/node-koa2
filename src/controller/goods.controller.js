@@ -1,5 +1,10 @@
 const path = require('path')
-const { createGoods, updateGoods } = require('../service/goods.service')
+const {
+  createGoods,
+  updateGoods,
+  removeGoods,
+  restoreGoods
+} = require('../service/goods.service')
 const {
   fileUploadError,
   unSupportedFileType,
@@ -8,12 +13,8 @@ const {
 } = require('../constant/err.type')
 
 class GoodsController {
-  /**
-   * 商品图片上传
-   * @param {*} ctx
-   * @param {*} next
-   * @returns
-   */
+  
+  // 上传商品图片
   async upload(ctx, next) {
     const { file } = ctx.request.files
 
@@ -36,11 +37,7 @@ class GoodsController {
     }
   }
 
-  /**
-   * 发布商品
-   * @param {*} ctx
-   * @param {*} next
-   */
+  // 发布商品
   async create(ctx, next) {
     // 直接调用service的createGoods方法
     try {
@@ -59,11 +56,7 @@ class GoodsController {
     }
   }
 
-  /**
-   * 更新/修改商品
-   * @param {*} ctx
-   * @param {*} next
-   */
+  // 更新/修改商品
   async update(ctx, next) {
     // 字节调用service的updateGoods方法
 
@@ -74,6 +67,44 @@ class GoodsController {
         ctx.body = {
           code: 0,
           message: '修改商品成功',
+          result: ''
+        }
+      } else {
+        return ctx.app.emit('error', invalidGoodsId, ctx)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // 下架商品
+  async remove(ctx, next) {
+    try {
+      const res = await removeGoods(ctx.params.id)
+
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '下架商品成功',
+          result: ''
+        }
+      } else {
+        return ctx.app.emit('error', invalidGoodsId, ctx)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // 上架商品
+  async restore(ctx, next) {
+    try {
+      const res = await restoreGoods(ctx.params.id)
+
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '上架商品成功',
           result: ''
         }
       } else {

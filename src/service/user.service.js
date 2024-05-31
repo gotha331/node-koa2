@@ -1,22 +1,13 @@
 const User = require('../model/user.model')
 class UserService {
-  /**
-   * 创建用户
-   * @param {*} username
-   * @param {*} password
-   * @returns
-   */
+  // 创建用户
   async createUser(username, password) {
     // 插入数据
     const res = await User.create({ username, password })
     return res
   }
 
-  /**
-   * 获取用户信息
-   * @param {*} param0
-   * @returns
-   */
+  // 获取用户信息
   async getUserInfo({ id, username, password, is_admin }) {
     const whereOpt = {}
 
@@ -33,10 +24,7 @@ class UserService {
     return res || null
   }
 
-  /**
-   * 根据id更新用户信息
-   * @param {*} param0
-   */
+  // 根据id更新用户信息
   async updateById({ id, username, password, is_admin }) {
     const whereOpt = { id }
     const newUser = {}
