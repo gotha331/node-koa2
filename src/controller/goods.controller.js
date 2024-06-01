@@ -3,7 +3,8 @@ const {
   createGoods,
   updateGoods,
   removeGoods,
-  restoreGoods
+  restoreGoods,
+  findGoods
 } = require('../service/goods.service')
 const {
   fileUploadError,
@@ -13,7 +14,6 @@ const {
 } = require('../constant/err.type')
 
 class GoodsController {
-  
   // 上传商品图片
   async upload(ctx, next) {
     const { file } = ctx.request.files
@@ -112,6 +112,20 @@ class GoodsController {
       }
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  // 获取商品列表
+  async findAll(ctx, next) {
+    // 1. 解析pageNum 和 pageSize
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query
+    // 2. 调用数据处理的相关方法
+    const res = await findGoods(pageNum, pageSize)
+    // 3. 返回结果
+    ctx.body = {
+      code: 0,
+      message: '获取商品列表成功',
+      result: res
     }
   }
 }
