@@ -9,12 +9,7 @@ class OrderService {
     const offset = (pageNum - 1) * pageSize
 
     const { count, rows } = await Order.findAndCountAll({
-      attributes: [
-        'goods_info',
-        'total',
-        'order_number',
-        'status'
-      ],
+      attributes: ['goods_info', 'total', 'order_number', 'status'],
       where: {
         status
       },
@@ -28,6 +23,10 @@ class OrderService {
       total: count,
       list: rows
     }
+  }
+
+  async updateOrder(id, status) {
+    return await Order.update({ status }, { where: { id } })
   }
 }
 
