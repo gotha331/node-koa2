@@ -1,4 +1,8 @@
-const { createAddr, findAllAddr } = require('../service/addr.service')
+const {
+  createAddr,
+  findAllAddr,
+  updateAddr
+} = require('../service/addr.service')
 
 class AddrController {
   // 创建地址
@@ -24,6 +28,19 @@ class AddrController {
     ctx.body = {
       code: 0,
       message: '地址列表获取成功',
+      result: res
+    }
+  }
+
+  // 修改地址
+  async update(ctx) {
+    const id = ctx.request.params.id
+    
+    const res = await updateAddr(id, ctx.request.body)
+
+    ctx.body = {
+      code: 0,
+      message: '修改地址成功',
       result: res
     }
   }
