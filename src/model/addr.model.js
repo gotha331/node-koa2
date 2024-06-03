@@ -31,6 +31,6 @@ const Addr = seq.define('Addr', {
   }
 })
 
-Addr.sync({ force: true })
+// Addr.sync({ force: true })
 
 module.exports = Addr
