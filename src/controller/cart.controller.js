@@ -2,7 +2,8 @@ const {
   createOrUpdate,
   findCarts,
   updateCarts,
-  removeCarts
+  removeCarts,
+  selectAllCarts
 } = require('../service/cart.service')
 
 const { cartFormatError } = require('../constant/err.type')
@@ -72,6 +73,33 @@ class CartController {
     ctx.body = {
       code: 0,
       message: '删除购物车成功',
+      result: res
+    }
+  }
+
+  // 全选与全不选
+  async selectAll(ctx) {
+    const user_id = ctx.state.user.dataValues.id
+    const { flag } = ctx.request.body
+
+    const res = await selectAllCarts(user_id, flag)
+
+    ctx.body = {
+      code: 0,
+      message: flag ? '全部选中' : '全部不选中',
+      result: res
+    }
+  }
+
+  // 全不选
+  async unSelectAll(ctx) {
+    const user_id = ctx.state.user.dataValues.id
+
+    const res = await unSelectAllCarts(user_id)
+
+    ctx.body = {
+      code: 0,
+      message: '全部不选中',
       result: res
     }
   }

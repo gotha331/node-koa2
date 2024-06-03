@@ -6,7 +6,9 @@ const {
   add,
   findAll,
   update,
-  remove
+  remove,
+  selectAll,
+  unSelectAll
 } = require('../controller/cart.controller')
 
 const router = new Router({ prefix: '/carts' })
@@ -30,4 +32,13 @@ router.patch(
 
 // 删除购物车
 router.delete('/', auth, validator({ ids: 'array' }), remove)
+
+// 全选与全不选
+router.post(
+  '/selectAll',
+  auth,
+  validator({ flag: { type: 'bool', required: true } }),
+  selectAll
+)
+
 module.exports = router

@@ -32,7 +32,7 @@ class CartService {
     const { count, rows } = await Cart.findAndCountAll({
       attributes: ['id', 'number', 'selected'],
       where: {
-        user_id: user_id
+        user_id
       },
       offset: offset,
       limit: pageSize * 1,
@@ -74,6 +74,17 @@ class CartService {
         }
       }
     })
+  }
+
+  async selectAllCarts(user_id, flag) {
+    return await Cart.update(
+      { selected: flag },
+      {
+        where: {
+          user_id
+        }
+      }
+    )
   }
 }
 
