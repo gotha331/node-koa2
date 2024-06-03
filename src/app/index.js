@@ -18,7 +18,8 @@ app.use(
       // 在option里的相对路径，不是相对的当前文件，而是相对process.cwd()
       uploadDir: path.resolve(__dirname, '../upload'),
       keepExtensions: true
-    }
+    },
+    parsedMethods: ['POST', 'PUT', 'PATCH', 'DELETE']
   })
 )
 
