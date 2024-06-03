@@ -39,6 +39,10 @@ class GoodsService {
       list: rows
     }
   }
+
+  async updateCarts(id,number,selected) {
+
+  }
 }
 
 module.exports = new GoodsService()
